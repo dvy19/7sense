@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "624512674375",
+    "project_id": "thsense-c7a0b",
+    "storage_bucket": "thsense-c7a0b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:624512674375:android:52b37407698df441591f62",
+        "android_client_info": {
+          "package_name": "com.example.a7sense"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANJHIjogCGHCqXY0LA6r8M9IbprO_NQms"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

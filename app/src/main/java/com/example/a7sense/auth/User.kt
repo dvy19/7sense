@@ -7,6 +7,13 @@ data class User(
     val age: String = "",
     val phone: String = "",
     val bmi: Float=0.0f,
+    val gender: String = "",
+    val bloodGroup: String = "",
+    val alcoholUse: String = "",
+    val smokingStatus: String = "",
+    val state: String = "",
+    val city: String = ""
+
 
 
     )

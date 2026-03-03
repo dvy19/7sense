@@ -12,7 +12,16 @@ class UserViewModel : ViewModel(){
     var message = mutableStateOf("")
     var isSaved = mutableStateOf(false)
 
-    fun saveUserData(name: String, age: String, phone: String) {
+    fun saveUserData(
+        name: String,
+        age: String,
+        phone: String,
+        bloodGroup: String,
+        alcoholUse: String,
+        smokingStatus: String,
+        state: String,
+        city: String
+    ) {
 
         val uid = authRepository.getCurrentUser()
 
@@ -23,7 +32,7 @@ class UserViewModel : ViewModel(){
                 name = name,
                 age = age,
                 phone = phone,
-                bmi = 0.0
+                bmi = 0.0f
             )
 
             userRepository.saveUser(user) { success, msg ->

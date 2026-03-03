@@ -11,21 +11,23 @@ import androidx.navigation.compose.rememberNavController
 import com.example.a7sense.BottomNavigationBar
 import com.example.a7sense.Screen
 import com.example.a7sense.appScreens.DashBoard.DashboardScreen
+import com.example.a7sense.appScreens.predictDisease.DiseasePredictionScreen
 import com.example.a7sense.bmi.BmiFeaturesScreen
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
-fun MainScreen(navController: NavController) {
+fun MainScreen(rootNavController: NavController) {
 
-    val navController = rememberNavController()
+    val mainNavController = rememberNavController()
 
     Scaffold(
         bottomBar = {
-            BottomNavigationBar(navController)
+            BottomNavigationBar(mainNavController)
         }
     ) { paddingValues ->
 
         NavHost(
-            navController = navController,
+            navController = mainNavController,
             startDestination = Screen.Dashboard.route,
             modifier = Modifier.padding(paddingValues)
         ) {
@@ -35,16 +37,38 @@ fun MainScreen(navController: NavController) {
             }
 
             composable(Screen.Health.route) {
-                HealthScreen()
+                HealthScreen(mainNavController)
             }
 
             composable(Screen.Profile.route) {
-                ProfileScreen(navController)
+                ProfileScreen(
+
+                    onLogout = {
+                        FirebaseAuth.getInstance().signOut()
+                        rootNavController.navigate("login") {
+                            popUpTo("main") { inclusive = true }
+                        }
+                    },
+
+                    onBMI = {
+                        FirebaseAuth.getInstance().signOut()
+                        mainNavController.navigate("bmi") {
+                            popUpTo("main") { inclusive = true }
+                        }
+                    },
+
+                    )
             }
 
             composable(Screen.Bmi.route) {
 
-                BmiFeaturesScreen(navController)
+                BmiFeaturesScreen(mainNavController)
+
+            }
+
+            composable(Screen.DiseasePredict.route) {
+
+                DiseasePredictionScreen(mainNavController)
 
             }
         }

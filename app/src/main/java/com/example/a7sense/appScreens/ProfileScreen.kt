@@ -35,7 +35,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 @Composable
-fun ProfileScreen(navController: NavController) {
+fun ProfileScreen(
+    onLogout:()->Unit,
+    onBMI:()->Unit
+ ) {
 
     val db = FirebaseFirestore.getInstance()
     var user by remember { mutableStateOf<User?>(null) }
@@ -128,7 +131,7 @@ fun ProfileScreen(navController: NavController) {
                     }
 
                     Button(
-                        onClick = { /* TODO */ },
+                        onClick =  onLogout ,
                         modifier = Modifier.weight(1f),
                         colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
                     ) {
@@ -144,10 +147,10 @@ fun ProfileScreen(navController: NavController) {
             // --- CARD: Calculate BMI ---
             item {
                 HealthActionCard(
-                    title = "Calculate BMI",
-                    subtitle = "Check your health status and risk factors",
+                    title = "BMI  Analysis",
+                    subtitle = "Check your health status and risk factors via BMI Score",
                     icon = Icons.Default.MonitorWeight,
-                    onClick = { navController.navigate("bmi") }
+                    onClick = onBMI
                 )
             }
 
@@ -206,5 +209,5 @@ fun HealthActionCard(
 @Preview
 @Composable
 fun PreviewProfile(){
-    ProfileScreen(navController = rememberNavController())
+    ProfileScreen( onLogout = {}, onBMI = {})
 }

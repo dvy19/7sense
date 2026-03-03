@@ -95,7 +95,7 @@ fun SignupScreen( navController: NavController,
 
         LaunchedEffect(isSuccess) {
             if (isSuccess) {
-                navController.navigate("userDetail") {
+                navController.navigate("userForm") {
                     popUpTo("signup") { inclusive = true }
                 }
             }

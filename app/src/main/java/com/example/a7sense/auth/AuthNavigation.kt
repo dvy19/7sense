@@ -5,34 +5,50 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.a7sense.Screen
+import com.example.a7sense.SplashScreen
 import com.example.a7sense.appScreens.MainScreen
-import com.example.a7sense.userdetail.UserDetailScreen
+import com.example.a7sense.userdetail.MultiStepForm
 
 
 @Composable
 fun AuthNavigation(){
 
-    val navController= rememberNavController();
+    val rootNavController= rememberNavController();
 
     NavHost(
-        navController = navController,
-        startDestination = Screen.Signup.route
+        navController = rootNavController,
+        startDestination = Screen.Splash.route
     ){
 
+        composable("splash") {
+            SplashScreen(
+                onUserLoggedIn = {
+                    rootNavController.navigate("main") {
+                        popUpTo("splash") { inclusive = true }
+                    }
+                },
+                onUserLoggedOut = {
+                    rootNavController.navigate("signup") {
+                        popUpTo("splash") { inclusive = true }
+                    }
+                }
+            )
+        }
+
         composable(Screen.Signup.route){
-            SignupScreen(navController)
+            SignupScreen(rootNavController)
         }
 
         composable(Screen.Login.route){
-            LoginScreen(navController)
+            LoginScreen(rootNavController)
         }
 
-        composable(Screen.UserDetail.route){
-            UserDetailScreen(navController)
+        composable(Screen.MultiStepForm.route){
+            MultiStepForm(rootNavController)
         }
 
         composable(Screen.Main.route) {
-            MainScreen(navController)   // 👈 Bottom Navigation starts here
+            MainScreen(rootNavController)   // 👈 Bottom Navigation starts here
         }
 
 

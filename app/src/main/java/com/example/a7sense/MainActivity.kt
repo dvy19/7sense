@@ -39,9 +39,14 @@ class MainActivity : ComponentActivity() {
 }
 
 sealed class Screen(val route:String){
+
+    object Splash:Screen("splash")
+
     object Login:Screen("login")
+
     object Signup:Screen("signup")
-    object UserDetail:Screen("userDetail")
+
+    object MultiStepForm:Screen("userForm")
 
 
     object Main : Screen("main")
@@ -50,6 +55,7 @@ sealed class Screen(val route:String){
     object Health : Screen("health")
     object Profile : Screen("profile")
 
+    object DiseasePredict:Screen("diseasePredict")
     object Bmi: Screen("BmiFeature")
 
 }

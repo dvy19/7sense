@@ -5,9 +5,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,7 +47,7 @@ fun SignupScreen( navController: NavController,
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "7Sense Login",
+            text = "7Sense Signup",
             style = MaterialTheme.typography.headlineMedium
         )
 
@@ -63,9 +66,17 @@ fun SignupScreen( navController: NavController,
 
         OutlinedTextField(
             value = password,
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Lock,
+                    contentDescription = "Lock Icon",
+                    tint = Color.Gray
+                )
+            },
             onValueChange = { password = it },
             label = { Text("Password") },
             visualTransformation = PasswordVisualTransformation(),
+
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -73,20 +84,31 @@ fun SignupScreen( navController: NavController,
 
         // Submit button
         Button(
-            onClick = { /* TODO: Handle login */ },
+            onClick = {
+
+                viewModel.signup(email.trim(),password)
+                      },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Submit")
+        }
+
+        LaunchedEffect(isSuccess) {
+            if (isSuccess) {
+                navController.navigate("userDetail") {
+                    popUpTo("signup") { inclusive = true }
+                }
+            }
         }
 
         Spacer(modifier = Modifier.height(12.dp))
 
         // Create account button
         TextButton(
-            onClick = { viewModel.signup(email, password) },
+            onClick = { navController.navigate("login") },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Create Account")
+            Text("Login Here")
         }
     }
 }

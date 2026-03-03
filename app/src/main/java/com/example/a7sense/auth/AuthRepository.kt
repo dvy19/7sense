@@ -1,5 +1,6 @@
 package com.example.a7sense.auth
 
+import androidx.navigation.navArgument
 import com.google.firebase.auth.FirebaseAuth
 
 class AuthRepository {
@@ -13,6 +14,7 @@ class AuthRepository {
             .addOnCompleteListener { task->
                 if(task.isSuccessful){
                     callback(true,"User Created Successfully")
+
                 }
                 else{
                     callback(false,task.exception?.message.toString())
@@ -33,7 +35,9 @@ class AuthRepository {
     }
 
 
-    fun getCurrentUser()=auth.currentUser;
+    fun getCurrentUser():String?{
+        return auth.currentUser?.uid
+    }
 
     }
 

@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.a7sense"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.a7sense"
@@ -42,54 +42,39 @@ android {
 
 dependencies {
 
+    // Firebase BOM
+    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-firestore-ktx")
 
+    // Core Android (SAFE VERSION)
+    implementation("androidx.core:core-ktx:1.13.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.2")
 
-        androidTestImplementation("androidx.test.ext:junit:1.1.5")
-        androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-        // Firebase BOM
-        implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
-        implementation("com.google.firebase:firebase-auth-ktx")
-        testImplementation("junit:junit:4.13.2")
+    // Activity (SAFE VERSION)
+    implementation("androidx.activity:activity-compose:1.9.1")
+    implementation("androidx.activity:activity-ktx:1.9.1")
 
-        // Core Android
-        implementation("androidx.core:core-ktx:1.12.0")
-        implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.4")
+    // Compose BOM (SDK 35 SAFE)
+    implementation(platform("androidx.compose:compose-bom:2024.06.00"))
 
-        // Activity & Compose
-        implementation("androidx.activity:activity-compose:1.9.0")
-        implementation("androidx.activity:activity-ktx:1.9.0")
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.ui:ui-graphics")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation("androidx.compose.material3:material3")
 
-        // Compose BOM
-        implementation(platform("androidx.compose:compose-bom:2024.10.01"))
-        implementation("androidx.compose.ui:ui")
-        implementation("androidx.compose.ui:ui-graphics")
-        implementation("androidx.compose.ui:ui-tooling-preview")
-        implementation("androidx.compose.material3:material3")
-        //implementation(libs.firebase.firestore)
+    debugImplementation("androidx.compose.ui:ui-tooling")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-        // 🔥 REQUIRED FOR PREVIEW
-        debugImplementation("androidx.compose.ui:ui-tooling")
-        debugImplementation("androidx.compose.ui:ui-test-manifest")
+    implementation("androidx.compose.material:material-icons-extended:1.6.8")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    // Navigation (SAFE VERSION)
+    implementation("androidx.navigation:navigation-compose:2.7.7")
 
-        implementation("androidx.compose.material:material-icons-extended:<version>")
-        // Navigation
-        implementation("androidx.navigation:navigation-compose:2.7.7")
-
-
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
-    implementation(libs.firebase.auth)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    // Testing
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }

@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -11,7 +12,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.a7sense.BottomNavigationBar
 import com.example.a7sense.Screen
 import com.example.a7sense.appScreens.DashBoard.DashboardScreen
-import com.example.a7sense.appScreens.predictDisease.DiseasePredictionScreen
 import com.example.a7sense.bmi.BmiFeaturesScreen
 import com.google.firebase.auth.FirebaseAuth
 
@@ -66,11 +66,13 @@ fun MainScreen(rootNavController: NavController) {
 
             }
 
-            composable(Screen.DiseasePredict.route) {
 
-                DiseasePredictionScreen(mainNavController)
-
-            }
         }
     }
+}
+
+@Preview
+@Composable
+fun PreviewMainScreen() {
+    MainScreen(rootNavController = rememberNavController())
 }

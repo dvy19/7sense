@@ -20,7 +20,8 @@ class UserViewModel : ViewModel(){
         alcoholUse: String,
         smokingStatus: String,
         state: String,
-        city: String
+        city: String,
+        dietStatus: String
     ) {
 
         val uid = authRepository.getCurrentUser()

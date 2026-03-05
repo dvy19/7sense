@@ -1,6 +1,5 @@
-package com.example.a7sense.appScreens
+package com.example.a7sense.appScreens.profile
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -22,14 +21,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.a7sense.Screen
 import com.example.a7sense.auth.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -40,30 +37,24 @@ fun ProfileScreen(
     onBMI:()->Unit
  ) {
 
+    val viewModel: ProfileViewModel=viewModel();
+
+
     val db = FirebaseFirestore.getInstance()
-    var user by remember { mutableStateOf<User?>(null) }
-    var isLoading by remember { mutableStateOf(true) }
+
 
     var auth=FirebaseAuth.getInstance()
     val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
 
     LaunchedEffect(currentUserId) {
-
-        if (currentUserId == null) return@LaunchedEffect
-
-        db.collection("users")
-            .document(currentUserId)
-            .addSnapshotListener { value, error ->
-
-                if (error != null) return@addSnapshotListener
-
-                if (value != null && value.exists()) {
-                    user = value.toObject(User::class.java)
-                }
-
-                isLoading = false
-            }
+        currentUserId?.let {
+            viewModel.loadUser(it)
+        }
     }
+
+    val user = viewModel.user
+    val isLoading = viewModel.isLoading
+
 
     // We use Scaffolding to provide a basic material layout structure
     Scaffold(
@@ -171,7 +162,7 @@ fun ProfileScreen(
 fun HealthActionCard(
     title: String,
     subtitle: String,
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    icon: ImageVector,
     onClick: () -> Unit
 ) {
     Card(

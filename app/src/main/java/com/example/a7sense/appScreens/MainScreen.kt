@@ -12,6 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.a7sense.BottomNavigationBar
 import com.example.a7sense.Screen
 import com.example.a7sense.appScreens.DashBoard.DashboardScreen
+import com.example.a7sense.appScreens.profile.ProfileScreen
 import com.example.a7sense.bmi.BmiFeaturesScreen
 import com.google.firebase.auth.FirebaseAuth
 

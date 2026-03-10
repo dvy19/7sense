@@ -58,6 +58,8 @@ sealed class Screen(val route:String){
     object DiseasePredict:Screen("diseasePredict")
     object Bmi: Screen("BmiFeature")
 
+    object CityName:Screen("cityVsname")
+
 }
 
 data class BottomNavItem(

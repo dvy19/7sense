@@ -2,6 +2,7 @@ package com.example.a7sense.auth
 
 import androidx.compose.runtime.Composable
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -34,13 +35,13 @@ import com.example.a7sense.ui.theme._7SenseTheme
 
 
 @Composable
-fun SignupScreen( navController: NavController,
+fun SignupScreen( rootNavController: NavController,
                  viewModel: AuthViewModel = viewModel()
 ){
 
     val context=LocalContext.current;
     val healthGradient = Brush.verticalGradient(
-        colors = listOf(Color(0xFFFFFFFF), Color(0xFFC1F7FF))
+        colors = listOf(Color(0xFFFFFFFF), Color(0xFFEBFBFF))
     )
     val message=viewModel.authMessage.value
     val isSuccess=viewModel.isSuccess.value
@@ -65,7 +66,7 @@ fun SignupScreen( navController: NavController,
         Text(
             text = "7Sense",
             style = MaterialTheme.typography.displayMedium,
-            color = Color(0xFF00796B), // Deep Teal
+            color = Color.Black, // Deep Teal
             fontWeight = FontWeight.Bold
         )
         Text(
@@ -109,9 +110,20 @@ fun SignupScreen( navController: NavController,
 
         Spacer(modifier = Modifier.height(32.dp))
 
+        LaunchedEffect(isSuccess) {
+            if(isSuccess){
+                rootNavController.navigate("userForm")
+
+            }
+        }
         // Sign Up Button
         Button(
-            onClick = { viewModel.signup(email.trim(),password.trim())},
+            onClick = { viewModel.signup(email.trim(),password.trim())
+
+                Toast.makeText(context,message,Toast.LENGTH_SHORT).show()
+
+
+                      },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
@@ -121,10 +133,16 @@ fun SignupScreen( navController: NavController,
             Text("Create Account", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
         }
 
+        LaunchedEffect(isSuccess) {
+            if (isSuccess){
+                rootNavController.navigate("userForm")
+            }
+        }
+
         Spacer(modifier = Modifier.height(24.dp))
 
         // Login Navigation
-        TextButton(onClick = { /* Navigate to Login */ }) {
+        TextButton(onClick = { rootNavController.navigate("login") }) {
             Row {
                 Text("Already have an account? ", color = Color.Gray)
                 Text("Login Here", color = Color(0xFF00796B), fontWeight = FontWeight.Bold)
@@ -139,5 +157,5 @@ fun SignupScreen( navController: NavController,
 @Preview
 @Composable
 fun PreviewSignup(){
-    SignupScreen(navController = rememberNavController());
+    SignupScreen(rootNavController = rememberNavController());
 }

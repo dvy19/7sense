@@ -12,8 +12,10 @@ import androidx.navigation.compose.rememberNavController
 import com.example.a7sense.BottomNavigationBar
 import com.example.a7sense.Screen
 import com.example.a7sense.appScreens.DashBoard.DashboardScreen
+import com.example.a7sense.appScreens.predictDisease.DiseasePredictionScreen
 import com.example.a7sense.appScreens.profile.ProfileScreen
 import com.example.a7sense.bmi.BmiFeaturesScreen
+import com.example.a7sense.graphs.city.CityNameScreen
 import com.google.firebase.auth.FirebaseAuth
 
 @Composable
@@ -34,7 +36,7 @@ fun MainScreen(rootNavController: NavController) {
         ) {
 
             composable(Screen.Dashboard.route) {
-                DashboardScreen()
+                DashboardScreen(mainNavController)
             }
 
             composable(Screen.Health.route) {
@@ -53,7 +55,7 @@ fun MainScreen(rootNavController: NavController) {
 
                     onBMI = {
                         FirebaseAuth.getInstance().signOut()
-                        mainNavController.navigate("bmi") {
+                        mainNavController.navigate("BmiFeature") {
                             popUpTo("main") { inclusive = true }
                         }
                     },
@@ -64,6 +66,17 @@ fun MainScreen(rootNavController: NavController) {
             composable(Screen.Bmi.route) {
 
                 BmiFeaturesScreen(mainNavController)
+
+            }
+
+            composable(Screen.DiseasePredict.route) {
+
+                DiseasePredictionScreen(mainNavController)
+
+            }
+            composable(Screen.CityName.route) {
+
+                CityNameScreen(mainNavController)
 
             }
 

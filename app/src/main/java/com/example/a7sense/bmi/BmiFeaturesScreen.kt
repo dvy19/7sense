@@ -21,7 +21,7 @@ import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun BmiFeaturesScreen(
-    navController: NavController,
+    mainNavController: NavController,
     viewModel: BmiViewModel = viewModel()) {
     val result = viewModel.responseState.value
     val loading = viewModel.isLoading.value
@@ -115,7 +115,7 @@ fun BmiFeaturesScreen(
 @Preview
 @Composable
 fun PreviewBmiFeaturesScreen() {
-    BmiFeaturesScreen(navController = rememberNavController(
+    BmiFeaturesScreen(mainNavController = rememberNavController(
 
     ))
 }

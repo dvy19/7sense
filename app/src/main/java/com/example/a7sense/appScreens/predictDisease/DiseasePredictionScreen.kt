@@ -28,7 +28,9 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.ui.text.style.TextAlign
 
 @Composable
-fun DiseasePredictionScreen(viewModel: PredictionViewModel=viewModel()) {
+fun DiseasePredictionScreen(
+    mainNavController: NavController,
+    viewModel: PredictionViewModel=viewModel()) {
     Column(modifier = Modifier.padding(16.dp)) {
         Text("Select Symptoms")
 
@@ -106,5 +108,5 @@ fun DiseasePredictionScreen(viewModel: PredictionViewModel=viewModel()) {
 @Preview
 @Composable
 fun PreviewPredictionScreen(){
-    DiseasePredictionScreen()
+    DiseasePredictionScreen(mainNavController = rememberNavController())
 }

@@ -1,5 +1,6 @@
 package com.example.a7sense.userdetail
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
@@ -44,7 +45,7 @@ fun MultiStepForm(rootNavController: NavController) {
     val context = LocalContext.current
 
     val viewModel: UserViewModel = viewModel()
-    var currentStep by remember { mutableStateOf(0) }
+    var currentStep by remember { mutableIntStateOf(0) }
 
 
     // Store user inputs
@@ -75,6 +76,13 @@ fun MultiStepForm(rootNavController: NavController) {
     val message = viewModel.message.value
     val isSaved = viewModel.isSaved.value
 
+    LaunchedEffect(isSaved) {
+        Log.d("NAV_DEBUG", "isSaved = $isSaved")
+
+        if (isSaved) {
+            rootNavController.navigate("main")
+        }
+    }
     Scaffold(
         bottomBar = {
             NavigationButtons(
@@ -88,6 +96,8 @@ fun MultiStepForm(rootNavController: NavController) {
                     else -> state.isNotEmpty() && city.isNotEmpty()
                 }
             )
+
+
         }
     ) { padding ->
         Column(

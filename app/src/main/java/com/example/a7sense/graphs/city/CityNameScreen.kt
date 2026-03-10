@@ -1,5 +1,21 @@
 package com.example.a7sense.graphs.city
 
+import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.*
+
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.BarChart
+import androidx.compose.material.icons.filled.ListAlt
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
+// MPAndroidChart imports (Assumed based on your snippet)
+
 import com.example.a7sense.graphs.StateCategoryViewModel
 import kotlin.collections.component1
 import kotlin.collections.component2
@@ -30,16 +46,16 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import android.graphics.Color
+import androidx.compose.foundation.shape.RoundedCornerShape
 @Composable
-fun CityNameScreen(viewModel: CityNameViewModel = viewModel()) {
+fun CityNameScreen(
+    mainNavController: NavController,
+    viewModel: CityNameViewModel = viewModel()
+) {
 
     val cityData by viewModel.cityData.collectAsState()
     val states by viewModel.cities.collectAsState()
-
-
     var selectedCity by remember { mutableStateOf("Bhopal") }
-
-
 
     Column(
         modifier = Modifier
@@ -47,8 +63,10 @@ fun CityNameScreen(viewModel: CityNameViewModel = viewModel()) {
             .padding(16.dp)
     ) {
 
-        if (states.isNotEmpty()) {
+        Spacer(modifier = Modifier.height(20.dp))
 
+        // -------- Dropdown ----------
+        if (states.isNotEmpty()) {
             StateDropdown(
                 states = states,
                 selectedState = selectedCity,
@@ -58,6 +76,7 @@ fun CityNameScreen(viewModel: CityNameViewModel = viewModel()) {
                 }
             )
         }
+
         Spacer(modifier = Modifier.height(20.dp))
 
         // -------- Disease List ----------
@@ -69,27 +88,43 @@ fun CityNameScreen(viewModel: CityNameViewModel = viewModel()) {
 
         // -------- Chart ----------
         if (cityData.isNotEmpty()) {
-            BarChartView(cityData)
+            ImprovedBarChartView(cityData)
         }
     }
 }
-
 @Composable
 fun StateDropdown(
     states: List<String>,
     selectedState: String,
     onStateSelected: (String) -> Unit
 ) {
+
     var expanded by remember { mutableStateOf(false) }
 
-    Box {
-        Button(onClick = { expanded = true }) {
-            Text(selectedState)
+    OutlinedCard(
+        onClick = { expanded = true },
+        shape = RoundedCornerShape(12.dp)
+    ) {
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+
+            Text(
+                text = if (selectedState.isEmpty()) "Select State" else selectedState
+            )
+
+            Icon(Icons.Default.ArrowDropDown, contentDescription = null)
         }
 
         DropdownMenu(
             expanded = expanded,
-            onDismissRequest = { expanded = false }
+            onDismissRequest = { expanded = false },
+            //modifier = Modifier.background(Color.WHITE)
         ) {
             states.forEach { state ->
                 DropdownMenuItem(
@@ -105,70 +140,50 @@ fun StateDropdown(
 }
 
 @Composable
-fun BarChartView(data: Map<String, Long>) {
-
+fun ImprovedBarChartView(data: Map<String, Long>) {
     AndroidView(
         factory = { context ->
             BarChart(context).apply {
-
-                // ---- Convert Data ----
-                val entries = data.entries.mapIndexed { index, entry ->
-                    BarEntry(index.toFloat(), entry.value.toFloat())
+                val entries = data.entries.mapIndexed { i, entry -> BarEntry(i.toFloat(), entry.value.toFloat()) }
+                val dataSet = BarDataSet(entries, "Reported Cases").apply {
+                    // Professional single-tone blue gradient or shades
+                    colors = listOf(
+                        android.graphics.Color.parseColor("#42A5F5"),
+                        android.graphics.Color.parseColor("#1E88E5"),
+                        android.graphics.Color.parseColor("#1565C0")
+                    )
+                    valueTextColor = android.graphics.Color.BLACK
+                    valueTextSize = 10f
                 }
 
-                val dataSet = BarDataSet(entries, "Disease Count")
+                this.data = BarData(dataSet).apply { barWidth = 0.4f }
 
-                // ✅ 1. Different colors for bars
-                dataSet.colors = listOf(
-                    Color.BLUE,
-                    Color.RED,
-                    Color.GREEN,
-                    Color.MAGENTA,
-                    Color.CYAN
-                )
-
-                // ✅ 2. Reduce bar width
-                val barData = BarData(dataSet)
-                barData.barWidth = 0.3f   // smaller = thinner bars
-
-                this.data = barData
-
-                // ✅ 3. Add spacing & padding
-                setFitBars(true)
-                setExtraOffsets(30f, 30f, 30f, 30f)
-
-                // ✅ Disable description
                 description.isEnabled = false
+                legend.isEnabled = false
+                setFitBars(true)
 
-                // ✅ Improve X Axis
                 xAxis.apply {
                     position = XAxis.XAxisPosition.BOTTOM
-                    granularity = 1f
                     setDrawGridLines(false)
-
-                    // Show disease names on X axis
-                    valueFormatter = IndexAxisValueFormatter(
-                        data.keys.toList()
-                    )
+                    granularity = 1f
+                    valueFormatter = IndexAxisValueFormatter(data.keys.toList())
                 }
 
-                xAxis.labelRotationAngle = -45f
+                axisLeft.apply {
+                    setDrawGridLines(true)
+                    gridColor = android.graphics.Color.LTGRAY
+                    axisLineColor = android.graphics.Color.TRANSPARENT
+                }
                 axisRight.isEnabled = false
-                axisLeft.axisMinimum = 0f
-
-                animateY(1000)
-
-                invalidate()
+                animateY(800)
             }
         },
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(350.dp)  // Increased height
-            .padding(16.dp)  // Outer padding
+        modifier = Modifier.fillMaxSize().padding(16.dp)
     )
 }
+
 @Preview
 @Composable
 fun PreviewStateCategoryScreen() {
-    CityNameScreen()
+    CityNameScreen(mainNavController = rememberNavController())
 }

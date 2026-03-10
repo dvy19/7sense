@@ -33,12 +33,23 @@ class UserViewModel : ViewModel(){
                 name = name,
                 age = age,
                 phone = phone,
-                bmi = 0.0f
+                bmi = 0.0f,
+                bloodGroup = bloodGroup,
+                alcoholUse = alcoholUse,
+                smokingStatus = smokingStatus,
+                state = state,
+                city = city,
+                dietStatus = dietStatus
+
             )
 
             userRepository.saveUser(user) { success, msg ->
                 isSaved.value = success
                 message.value = msg
+
+                if(success){
+                    isSaved.value=true
+                }
             }
 
         } else {

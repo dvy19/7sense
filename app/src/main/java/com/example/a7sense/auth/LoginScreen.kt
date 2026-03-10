@@ -18,7 +18,7 @@ import androidx.navigation.compose.rememberNavController
 
 
 @Composable
-fun LoginScreen( navController: NavController,
+fun LoginScreen( rootNavController: NavController,
                  viewModel: AuthViewModel=viewModel()
 ){
 
@@ -68,7 +68,7 @@ fun LoginScreen( navController: NavController,
 
         // Submit button
         Button(
-            onClick = { /* TODO: Handle login */ },
+            onClick = { viewModel.login(email,password) },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Submit")
@@ -78,7 +78,7 @@ fun LoginScreen( navController: NavController,
 
         // Create account button
         TextButton(
-            onClick = { viewModel.login(email,password) },
+            onClick = { rootNavController.navigate("signup") },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Create Account")
@@ -91,5 +91,5 @@ fun LoginScreen( navController: NavController,
 @Preview
 @Composable
 fun PreviewLogin(){
-    LoginScreen(navController = rememberNavController())
+    LoginScreen(rootNavController = rememberNavController())
 }
